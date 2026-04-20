@@ -9,7 +9,7 @@ dotnet restore -> restaura los paquetes NuGet
 dotnet build -> compila  
 dotnet run -> ejecuta  
 
-# Windows
+## Windows
 Add-Migration Inicial  
 Update-Database  
 Correlo 
