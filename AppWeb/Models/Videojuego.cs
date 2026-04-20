@@ -23,6 +23,7 @@ namespace AppWeb.Models
         [StringLength(500)]
         public string Descripcion { get; set; }
 
+        public string? imagen { get; set; }
         public ICollection<Compra> Compras { get; set; } = new List<Compra>();
     }
 }

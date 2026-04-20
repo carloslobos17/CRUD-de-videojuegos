@@ -2,6 +2,7 @@
 using AppWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
 
 namespace AppWeb.Controllers
 {
@@ -29,9 +30,24 @@ namespace AppWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Create(Videojuego videojuegos)
+        public async Task<IActionResult> Create(Videojuego videojuegos, IFormFile archivoImagen)
         {
-            if (!ModelState.IsValid) return View(videojuegos);
+            if (!ModelState.IsValid) 
+                return View(videojuegos);
+            if (archivoImagen != null && archivoImagen.Length > 0)
+            {
+                var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(archivoImagen.FileName);
+
+                var ruta = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot/imagenes", nombreArchivo);
+                using (var stream = new FileStream(ruta, FileMode.Create))
+                {
+                    await archivoImagen.CopyToAsync(stream);
+                }
+                videojuegos.imagen = "/imagenes/" + nombreArchivo;
+            }
+
+
             _context.Videojuegos.Add(videojuegos);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -49,27 +65,61 @@ namespace AppWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Edit(int id, Videojuego videojuegos)
+        public async Task<IActionResult> Edit(int id, Videojuego videojuegos, IFormFile? archivoImagen)
         {
-            if (id != videojuegos.Id) return NotFound();
+            if (id != videojuegos.Id) 
+                return NotFound();
+
+            var juegoDB = await _context.Videojuegos.FindAsync(id);
+            if (juegoDB == null)
+                return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
+                juegoDB.Titulo = videojuegos.Titulo;
+                juegoDB.Precio = videojuegos.Precio;
+                juegoDB.Categoria = videojuegos.Categoria;
+                juegoDB.Descripcion = videojuegos.Descripcion;
+                if (archivoImagen != null && archivoImagen.Length > 0)
                 {
-                    _context.Update(videojuegos);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Videojuegos.Any(e => e.Id == videojuegos.Id)) return NotFound();
-                    else
-                        throw;
-                }
+                    if (!string.IsNullOrEmpty(juegoDB.imagen))
+                    {
+                        var rutaAnterior = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            "wwwroot",
+                            juegoDB.imagen.TrimStart('/')
+                            );
+                        if(System.IO.File.Exists(rutaAnterior))
+                            System.IO.File.Delete(rutaAnterior);
+                    }
+                    var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(archivoImagen.FileName);
 
-                return RedirectToAction(nameof(Index));
+                    var rutaNueva = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot/imagenes",
+                        nombreArchivo
+                        );
+                    using (var stream = new FileStream(rutaNueva, FileMode.Create))
+                    {
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                //try
+                //{
+                //    _context.Update(videojuegos);
+                //    await _context.SaveChangesAsync();
+                //}
+                //catch (DbUpdateConcurrencyException)
+                //{
+                //    if (!_context.Videojuegos.Any(e => e.Id == videojuegos.Id)) return NotFound();
+                //    else
+                //        throw;
+                //}
+
+                ////return RedirectToAction(nameof(Index));
             }
-            return View(videojuegos);
+            return View(juegoDB);
         }
 
         public async Task<IActionResult> Delete(int? id)

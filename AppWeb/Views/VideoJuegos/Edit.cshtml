@@ -1,6 +1,6 @@
 ﻿@model AppWeb.Models.Videojuego
 
-<h2>Editar Videojuego</h2> <form asp-action="Edit">
+<h2>Editar Videojuego</h2> <form asp-action="Edit" enctype="multipart/form-data">
 
 <input type="hidden" asp-for="Id" />
 <div>
@@ -22,4 +22,12 @@
 	<label>Descripción</label>
 	<textarea asp-for="Descripcion" class="form-control"></textarea>
 </div>
+<div>
+	<label>Imagen actual</label><br />
+	<img src="@Model.imagen" width="120" />
+</div>
+	<div>
+		<label>Nueva imagen</label><br />
+		<input type="file" name="archivoImagen" class="form-control" />
+	</div>
 <button type="submit" class="btn btn-warning">Actualizar</button> </form>
