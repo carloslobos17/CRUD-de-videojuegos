@@ -14,5 +14,5 @@ con": "Server=localhost;Database=AppWeb;User Id=sa;Password="pass";TrustServerCe
 ## Windows
 Add-Migration Inicial  
 Update-Database  
-Correlo 
+Correlo   
 "con": "Data Source=CT1-PC21;Initial Catalog=AppWeb;Integrated Security=True;Trust Server Certificate=True"  
