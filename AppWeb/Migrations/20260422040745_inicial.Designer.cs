@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppWeb.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260422024611_inicial")]
+    [Migration("20260422040745_inicial")]
     partial class inicial
     {
         /// <inheritdoc />
@@ -24,6 +24,23 @@ namespace AppWeb.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AppWeb.Models.Categoria", b =>
+                {
+                    b.Property<int>("idCategoria")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idCategoria"));
+
+                    b.Property<string>("categoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idCategoria");
+
+                    b.ToTable("Categorias");
+                });
 
             modelBuilder.Entity("AppWeb.Models.Compra", b =>
                 {
@@ -113,6 +130,9 @@ namespace AppWeb.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("idCategoria")
+                        .HasColumnType("int");
 
                     b.Property<string>("imagen")
                         .HasColumnType("nvarchar(max)");

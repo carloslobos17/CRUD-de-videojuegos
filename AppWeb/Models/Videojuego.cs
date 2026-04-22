@@ -16,6 +16,8 @@ namespace AppWeb.Models
         [Column(TypeName = "decimal(10,2)")]
         public decimal Precio { get; set; }
 
+        public int idCategoria { get; set; }
+
         [Required]
         [StringLength(100)]
         public string Categoria { get; set; }

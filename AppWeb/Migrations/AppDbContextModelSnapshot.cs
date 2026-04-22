@@ -22,6 +22,23 @@ namespace AppWeb.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AppWeb.Models.Categoria", b =>
+                {
+                    b.Property<int>("idCategoria")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idCategoria"));
+
+                    b.Property<string>("categoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idCategoria");
+
+                    b.ToTable("Categorias");
+                });
+
             modelBuilder.Entity("AppWeb.Models.Compra", b =>
                 {
                     b.Property<int>("Id")
@@ -110,6 +127,9 @@ namespace AppWeb.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("idCategoria")
+                        .HasColumnType("int");
 
                     b.Property<string>("imagen")
                         .HasColumnType("nvarchar(max)");

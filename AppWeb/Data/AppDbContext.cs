@@ -11,7 +11,8 @@ namespace AppWeb.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Videojuego> Videojuegos { get; set; }
         public DbSet<Compra> Compras { get; set; }
-        
+        public DbSet<Categoria> Categorias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

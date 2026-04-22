@@ -21,15 +21,26 @@ namespace AppWeb.Controllers
 		[SessionAuthorize]
 		public IActionResult Dashboard()
 		{
-			return View();
+            var data = (from v in _context.Videojuegos
+                        join c in _context.Categorias
+                        on v.idCategoria equals c.idCategoria
+                        group v by c.categoria into g
+                        select new
+                        {
+                            Categoria = g.Key,
+                            Total = g.Count()
+                        }).ToList();
+            ViewBag.Categorias = data.Select(x => x.Categoria).ToList();
+            ViewBag.Totales = data.Select(x => x.Total).ToList();
+            return View();
 		}
 
         public IActionResult Login()
-		{
-			return View();
-		}
+        {
+            return View();
+        } 
 
-		[HttpPost]
+        [HttpPost]
 
 		public IActionResult Login (Login model)
 		{
