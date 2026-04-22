@@ -24,6 +24,7 @@ namespace AppWeb.Models
         public string Descripcion { get; set; }
 
         public string? imagen { get; set; }
-        public ICollection<Compra> Compras { get; set; } = new List<Compra>();
+
+        public ICollection<Compra>? Compras { get; set; }
     }
 }

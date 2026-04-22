@@ -16,7 +16,7 @@ namespace AppWeb.Models
 
         [ForeignKey("UsuarioId")]
         public Usuario Usuarios { get; set; }
-        
+
         [Required]
         public int VideojuegoId { get; set; }
 
@@ -24,4 +24,3 @@ namespace AppWeb.Models
         public Videojuego Videojuegos { get; set; }
     }
 }
-

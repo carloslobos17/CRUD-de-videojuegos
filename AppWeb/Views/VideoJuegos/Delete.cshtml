@@ -1,14 +1,17 @@
-﻿
-@model AppWeb.Models.Videojuego
-
+﻿@model AppWeb.Models.Videojuego
+@{
+    var usuario = Context.Session.GetString("usuario");
+}
 <h2>Eliminar Videojuego</h2>
 
-<h4>¿Estás seguro que deseas eliminar esto?</h4>
+<h4>¿Estas seguro que deseas eliminar este videojuego?</h4>
+
 <div>
-	<strong>@Model.Titulo</strong> - $@Model.Precio
+    <strong>@Model.Titulo</strong> - $@Model.Precio
 </div>
+
 <form asp-action="Delete">
-	<input type="hidden" asp-for="Id" />
-	<button type="submit" class="btn btn-danger">Eliminar</button> 
-	<a asp-action="Index" class="btn btn-secondary">Cancelar</a> 
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>

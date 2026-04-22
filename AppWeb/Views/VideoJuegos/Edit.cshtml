@@ -1,33 +1,39 @@
 ﻿@model AppWeb.Models.Videojuego
+@{
+    var usuario = Context.Session.GetString("usuario");
+}
+<h2>Editar Videojuegos</h2>
+<form asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Titulo</label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo"></span>
+    </div>
+    <div>
+        <label>Precio</label>
+        <input asp-for="Precio" class="form-control" />
+        <span asp-validation-for="Precio"></span>
+    </div>
+    <div>
+        <label>Categoria</label>
+        <input asp-for="Categoria" class="form-control" />
+        <span asp-validation-for="Categoria"></span>
+    </div>
+    <div>
+        <label>Descripción</label>
+        <textarea asp-for="Descripcion" class="form-control"></textarea>
+    </div>
 
-<h2>Editar Videojuego</h2> <form asp-action="Edit" enctype="multipart/form-data">
+    <div>
+        <label>Imagen Actual</label><br />
+        <img src="@Model.imagen" width="120" />
+    </div>
 
-<input type="hidden" asp-for="Id" />
-<div>
-	<label>Titulo</label>
-	<input asp-for="Titulo" class="form-control" /> 
-	<span asp-validation-for="Titulo"></span>
-</div>
-<div>
-	<label>Precio</label>
-	<input asp-for="Precio" class="form-control" /> 
-	<span asp-validation-for="Precio"></span>
-</div>
-<div>
-	<label>Categoria</label>
-	<input asp-for="Categoria" class="form-control" /> 
-	<span asp-validation-for="Categoria"></span>
-</div>
-<div>
-	<label>Descripción</label>
-	<textarea asp-for="Descripcion" class="form-control"></textarea>
-</div>
-<div>
-	<label>Imagen actual</label><br />
-	<img src="@Model.imagen" width="120" />
-</div>
-	<div>
-		<label>Nueva imagen</label><br />
-		<input type="file" name="archivoImagen" class="form-control" />
-	</div>
-<button type="submit" class="btn btn-warning">Actualizar</button> </form>
+    <div>
+        <label>Actualizar Imagen</label>
+        <input type="file" name="archivoImagen" class="form-control"/>
+    </div>
+
+    <button type="submit" class="btn btn-warning">Actualizar</button>
+</form>

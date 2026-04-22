@@ -2,13 +2,18 @@
 
 @{
     ViewData["Title"] = "Lista de Videojuegos";
+    var usuario = Context.Session.GetString("usuario");
 }
 
 <h2>Lista de Videojuegos</h2>
-<a asp-action="Create" class="btn btn-primary">Agregar Nuevo Videojuego</a>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Agregar Nuevo Videojuego</a>
+</p>
 
 <table class="table table-striped mt-3">
     <thead>
+
         <tr>
             <th>Título</th>
             <th>Precio</th>
@@ -22,6 +27,7 @@
         {
             <tr>
                 <td>@juego.Titulo</td>
+                <td>@juego.imagen</td> 
                 <td>$@juego.Precio</td>
                 <td>@juego.Categoria</td>
                 <td>@juego.Descripcion</td>
