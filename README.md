@@ -17,7 +17,7 @@ Update-Database
 Correlo   
 "con": "Data Source=CT1-PC21;Initial Catalog=AppWeb;Integrated Security=True;Trust Server Certificate=True"  
 
-### usuario con sal
+### Usuario con sal
 
 USE AppWeb;
 GO
