@@ -82,55 +82,14 @@
                             <i class="fa-solid fa-gamepad me-2 text-warning"></i>
                             <span class="text-muted">@juego.Categoria</span>
                         </div>
-
+                        <div id="paypal-button-container"></div>
+                        <p id="result-message"></p>
                     </div>
                 </div>
             </div>
         }
     </div>
-@* @* @model Notas *@
 
-@{
-    ViewData["Title"] = "Home Page";
-    // Layout = "_Layout1";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<h2>Videojuegos disponibles</h2>
-
-<div class="row">
-    @foreach (var juego in Model)
-    {
-        <div class="col-md-4">
-            <div class="card-mb-3">
-                <div class="card-body">
-						<img src="@juego.imagen" width="120" />
-						<h5 class="card-title">@juego.Titulo</h5>
-						<p class="card-text">@juego.Descripcion</p>
-						<p><strong>Categoria: </strong>@juego.Categoria</p>
-						<p><strong>Precio: </strong>@juego.Precio</p>
-						<div id="paypal-button-container"></div>
-						<p id="result-message"></p>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
-@* <form asp-controller="Home" asp-action="Calcular" method="post">
-    <input type="number" asp-for="n1" placeholder="Numero 1"/> <br /> <br />
-    <input type="number" asp-for="n2" placeholder="Numero 2" /> <br /> <br />
-    <input type="number" asp-for="n3" placeholder="Numero 3" /> <br /> <br />
-
-    <br /> <br />
-    <input type="submit" name="name" value="Calcular"/>
-</form> *@
-
-@* <h1> @Model.promedio</h1> *@
-<script src="https://www.paypal.com/sdk/js?client-id=ARIzKl6aafVAcjw0jYHoN6ZjruGmMf636X_x3ZQzhpBufAz_sDkiYWBjQ1c_ujBs06mTGPa2cTZQ1MUq&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,paylater,card"
-        data-sdk-integration-source="developer-studio"></script>
-<script src="app.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=ARIzKl6aafVAcjw0jYHoN6ZjruGmMf636X_x3ZQzhpBufAz_sDkiYWBjQ1c_ujBs06mTGPa2cTZQ1MUq&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater"
+            data-sdk-integration-source="developer-studio"></script>
+    <script src="app.js"></script>
