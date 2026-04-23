@@ -70,7 +70,7 @@ body {
 
 .banner {
     background: url('/img/banner.png');
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-position: center top;
     height: 80vh;

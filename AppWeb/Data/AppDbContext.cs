@@ -13,5 +13,7 @@ namespace AppWeb.Data
         public DbSet<Compra> Compras { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<DetalleCompra> Detalle_Compras{ get; set; }
+
+        public DbSet<Rol> Roles { get; set; }
         }
     }

@@ -53,16 +53,51 @@ namespace AppWeb.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
-                    b.Property<int>("VideojuegoId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.HasIndex("VideojuegoId");
-
                     b.ToTable("Compras");
+                });
+
+            modelBuilder.Entity("AppWeb.Models.DetalleCompra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("VideojuegosId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<string>("codigoTransaccion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("estadoCompra")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fechaHoraTransaccion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("idCompra")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VideojuegosId");
+
+                    b.HasIndex("idCompra");
+
+                    b.ToTable("Detalle_Compras");
                 });
 
             modelBuilder.Entity("AppWeb.Models.Usuario", b =>
@@ -80,7 +115,7 @@ namespace AppWeb.Migrations
 
                     b.Property<string>("Correo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime2");
@@ -95,9 +130,6 @@ namespace AppWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Correo")
-                        .IsUnique();
 
                     b.ToTable("Usuarios");
                 });
@@ -147,23 +179,29 @@ namespace AppWeb.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppWeb.Models.Videojuego", "Videojuegos")
-                        .WithMany("Compras")
-                        .HasForeignKey("VideojuegoId")
+                    b.Navigation("Usuarios");
+                });
+
+            modelBuilder.Entity("AppWeb.Models.DetalleCompra", b =>
+                {
+                    b.HasOne("AppWeb.Models.Videojuego", "Videojuego")
+                        .WithMany()
+                        .HasForeignKey("VideojuegosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuarios");
+                    b.HasOne("AppWeb.Models.Compra", "Compra")
+                        .WithMany()
+                        .HasForeignKey("idCompra")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Videojuegos");
+                    b.Navigation("Compra");
+
+                    b.Navigation("Videojuego");
                 });
 
             modelBuilder.Entity("AppWeb.Models.Usuario", b =>
-                {
-                    b.Navigation("Compras");
-                });
-
-            modelBuilder.Entity("AppWeb.Models.Videojuego", b =>
                 {
                     b.Navigation("Compras");
                 });

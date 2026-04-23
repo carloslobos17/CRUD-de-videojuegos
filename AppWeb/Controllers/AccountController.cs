@@ -119,11 +119,23 @@ namespace AppWeb.Controllers
 					//Console.WriteLine("Hash generado: " + Convert.ToBase64String(hashBytes));
 					//Console.WriteLine("Hash DB: " + Convert.ToBase64String(user.Contrasena));
 
+
                     if (hashBytes.SequenceEqual(user.Contrasena))
 					{
                         HttpContext.Session.SetString("usuario", user.Nombre);
                         Console.WriteLine("Usuario logueado:" + user.Nombre);
-                        return RedirectToAction("Dashboard", "Account");
+                        HttpContext.Session.SetInt32("idRol", user.idRol);
+
+						if(user.idRol == 1)
+						{
+                            return RedirectToAction("Dashboard", "Account");
+
+                        }else if(user.idRol == 2)
+                        {
+                            return RedirectToAction("JuegosVenta", "Account");
+							//juegos venta es la pantalla que se mostrara para vender
+                        }
+                        
                     }
                 }
 			}

@@ -20,4 +20,8 @@
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\app.js" />
+  </ItemGroup>
+
 </Project>

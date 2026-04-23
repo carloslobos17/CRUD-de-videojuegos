@@ -2,12 +2,10 @@
     style: {
         shape: "rect",
         layout: "vertical",
-        color: "gold",
-        label: "paypal",
+        color: "blue",
+        label: "pay",
     },
-    message: {
-        amount: 100,
-    },
+
     async createOrder() {
         try {
             const response = await fetch("/api/orders", {

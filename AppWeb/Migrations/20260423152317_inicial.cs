@@ -31,7 +31,7 @@ namespace AppWeb.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Correo = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Contrasena = table.Column<byte[]>(type: "varbinary(255)", maxLength: 255, nullable: false),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -66,8 +66,7 @@ namespace AppWeb.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FechaCompra = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    VideojuegoId = table.Column<int>(type: "int", nullable: false)
+                    UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,9 +77,34 @@ namespace AppWeb.Migrations
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Detalle_Compras",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VideojuegosId = table.Column<int>(type: "int", nullable: false),
+                    cantidad = table.Column<int>(type: "int", nullable: false),
+                    total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    estadoCompra = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    fechaHoraTransaccion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    codigoTransaccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    idCompra = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Detalle_Compras", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Compras_Videojuegos_VideojuegoId",
-                        column: x => x.VideojuegoId,
+                        name: "FK_Detalle_Compras_Compras_idCompra",
+                        column: x => x.idCompra,
+                        principalTable: "Compras",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Detalle_Compras_Videojuegos_VideojuegosId",
+                        column: x => x.VideojuegosId,
                         principalTable: "Videojuegos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -92,15 +116,14 @@ namespace AppWeb.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Compras_VideojuegoId",
-                table: "Compras",
-                column: "VideojuegoId");
+                name: "IX_Detalle_Compras_idCompra",
+                table: "Detalle_Compras",
+                column: "idCompra");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_Correo",
-                table: "Usuarios",
-                column: "Correo",
-                unique: true);
+                name: "IX_Detalle_Compras_VideojuegosId",
+                table: "Detalle_Compras",
+                column: "VideojuegosId");
         }
 
         /// <inheritdoc />
@@ -110,13 +133,16 @@ namespace AppWeb.Migrations
                 name: "Categorias");
 
             migrationBuilder.DropTable(
+                name: "Detalle_Compras");
+
+            migrationBuilder.DropTable(
                 name: "Compras");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Videojuegos");
 
             migrationBuilder.DropTable(
-                name: "Videojuegos");
+                name: "Usuarios");
         }
     }
 }
