@@ -6,6 +6,7 @@ using AppWeb.Data;
 using AppWeb.Filtros;
 using AppWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppWeb.Controllers
 {
@@ -21,17 +22,8 @@ namespace AppWeb.Controllers
 		[SessionAuthorize]
 		public IActionResult Dashboard()
 		{
-            //var data = (from v in _context.Videojuegos
-            //            join c in _context.Categorias
-            //            on v.idCategoria equals c.idCategoria
-            //            group v by c.categoria into g
-            //            select new
-            //            {
-            //                Categoria = g.Key,
-            //                Total = g.Count()
-            //            }).ToList();
-            //ViewBag.Categorias = data.Select(x => x.Categoria).ToList();
-            //ViewBag.Totales = data.Select(x => x.Total).ToList();
+            var categorias = _context.Categorias.ToList();
+            ViewBag.Categorias = categorias;
             return View();
 		}
 
@@ -42,20 +34,63 @@ namespace AppWeb.Controllers
 						on v.idCategoria equals c.idCategoria
 						select new { c.categoria};
 
-            if (!string.IsNullOrEmpty(categoria))
+            if (!string.IsNullOrEmpty(categoria) && categoria != "todas")
             {
                 query = query.Where(x => x.categoria == categoria);
             }
 
             var data = query
-						.GroupBy(x => x.categoria)
-                        .Select(g => new
-                        {
-                            Categoria = g.Key,
-                            Total = g.Count()
-                        }).ToList();
+                .GroupBy(x => x.categoria)
+                .Select(g => new
+                {
+                    Categoria = g.Key,
+                    Total = g.Count()
+                }).ToList();
+
             return Json(data);
         }
+
+		public async Task<IActionResult> DetalleCompras(DateTime? desde, DateTime? hasta, int paginas = 1)
+		{
+			int paginador = 10;
+			var query = _context.Detalle_Compras
+				.Include(d => d.Compra)
+				//.Include(c => c.Videojuegos)
+                .AsQueryable();
+
+			if (desde.HasValue)
+			{
+				query = query.Where(d => d.fechaHoraTransaccion >= desde.Value);
+            }
+			if (hasta.HasValue)
+			{
+				query = query.Where(d => d.fechaHoraTransaccion <= hasta.Value);
+            }
+
+			var totalregistros = await query.CountAsync();
+			var datos = await query
+				.OrderByDescending(d => d.fechaHoraTransaccion)
+				.Skip((paginas - 1) * paginador)
+				.Take(paginador)
+				.Select(d => new VentasViewModel
+				{
+					IdCompra = d.idCompra,
+					VideojuegosId = d.VideojuegosId,
+					cantidad = d.cantidad,
+					total = d.total,
+					estadoCompra = d.estadoCompra,
+					fechaHoraTransaccion = d.fechaHoraTransaccion,
+					codigoTransaccion = d.codigoTransaccion
+				}).ToListAsync();
+
+			ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalregistros / paginador);
+			ViewBag.PaginaActual = paginas;
+			ViewBag.desde = desde;
+            ViewBag.hasta = hasta;
+
+            return View(datos);
+        }
+
 
         public IActionResult Login()
         {

@@ -1,0 +1,50 @@
+﻿@{
+	Layout = null;
+	var usuario = Context.Session.GetString("usuario");
+}
+
+@model List<VentasViewModel>
+
+<form>
+	<input type="date" name="desde" value="@ViewBag.desde?.ToString("yyyy-MM-dd")" />
+	<input type="date" name="hasta" value="@ViewBag.hasta?.ToString("yyyy-MM-dd")" />
+
+	<button type="submit">Filtrar</button>
+</form>
+<table>
+	<thead>
+		<tr>
+			<th>Usuario</th>
+			<th>Videojuegos</th>
+			<th>Cantidad</th>
+			<th>Total</th>
+			<th>Estados</th>
+			<th>Fecha</th>
+			<th>Codigo</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var item in Model)
+		{
+			<tr>
+				<td>@item.UsuarioId</td>
+				<td>@item.VideojuegosId</td>
+				<td>@item.cantidad</td>
+				<td>@item.total</td>
+				<td>@item.estadoCompra</td>
+				<td>@item.fechaHoraTransaccion</td>
+				<td>@item.codigoTransaccion</td>
+			</tr>
+		}
+		</tbody>
+</table>
+
+<div>
+	@for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+	{
+		<a href="?paginas=@i&desde=@ViewBag.desde&hasta=@ViewBag.hasta">@i
+		
+			@i
+		</a>
+	}
+</div>

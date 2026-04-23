@@ -145,73 +145,44 @@
 				Este es tu panel principal. Aquí podrás visualizar estadísticas y gestionar el sistema.
 			</p>
 		</div>
-		<div class="row g-4">
+ 		<div class="row g-4">
 			<div class="col-md-6">
 				<select id="filtroCategoria" class="form-select m-4">
-					<option value="Todas las categorias">Todas las categorias</option>
-					<option value="Juego de granja">Juegos de granja</option>
-					<option value="Juego de ritmo">Juegos de ritmo</option>
-					<option value="Juegos">Juegos</option>
+					<option value="todas">Todas las categorias</option>
+					@foreach(var c in ViewBag.Categorias)
+					{
+						<option value="@c.categoria">@c.categoria</option>
+					}
 				</select>
-				@* grafica de juegos por catgegoria *@
 				<div id="container">
+				</div>
 			</div>
 		</div>
-		
-
-		</div>
-
 	</div>
 </body>
-@* <script>
-
-	var categoria = @Html.Raw(Json.Serialize(ViewBag.Categorias));
-	var totales = @Html.Raw(Json.Serialize(ViewBag.Totales));
-
-	Highcharts.chart('container', {
-
-		chart: {
-			type: 'column'
-		},
-
-		title: {
-			text: 'Cantidad de videojuegos por categorias a la fecha año 2026 en sitio web x',
-			align: 'left'
-		},
-
-		xAxis: {
-			categories: categoria
-		},
-
-		series: [{
-			name : 'Juegos',
-			data: totales
-		}]
-	});
-
-</script> *@
 <script>
 	function cargarGrafica (categoria=""){
-		$.get('Account/obtenerDatos', {categoria:categoria}, function(data){
-			var categorias = data.map(x => x.Categoria);
-			var totales = data.map(x => x.Total);
+		$.get('/Account/ObtenerDatos', {categoria:categoria}, function(data){
+			var categoria= data.map(x => x.categoria);
+			var totales = data.map(x => x.total);
 
 			Highcharts.chart('container',{
 				chart: {type: 'column'},
-				title: {Text: 'Cantidad de videojuegos por categorias en empresa sa de sv'},
+				title: {text: 'Cantidad de videojuegos por categorias en empresa sa de sv'},
 				xAxis: {categories: categoria},
 				series: [{
 					name : 'Juegos',
 					data: totales
 				}]	
 			});
-		}
+		});
 	}
 
 
 	cargarGrafica();
 	$('#filtroCategoria').change(function(){
-		cargarGrafica($(this).val());
-	})
+		var val = $(this).val();
+		cargarGrafica(val === "todas" ? "" : val);
+	});
 </script>
 </html>

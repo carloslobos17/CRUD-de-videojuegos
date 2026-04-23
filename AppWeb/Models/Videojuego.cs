@@ -18,6 +18,7 @@ namespace AppWeb.Models
 
         public int idCategoria { get; set; }
 
+
         [Required]
         [StringLength(100)]
         public string Categoria { get; set; }
@@ -27,6 +28,6 @@ namespace AppWeb.Models
 
         public string? imagen { get; set; }
 
-        public ICollection<Compra>? Compras { get; set; }
+        //public ICollection<Compra>? Compras { get; set; }
     }
 }
