@@ -19,10 +19,10 @@ Correlo
 
 ### Usuario con sal
 
-USE AppWeb;
+USE AppWeb;  
 GO
 
-DECLARE @salt NVARCHAR(50) = NEWID();
+DECLARE @salt NVARCHAR(50) = NEWID();  
 
 INSERT INTO Usuarios (Nombre, Correo, Contrasena, salt, FechaRegistro)
 VALUES (
@@ -31,5 +31,5 @@ VALUES (
     HASHBYTES('SHA2_256', @salt + '123'),
     @salt,
     '2026/03/24'
-)
+)  
 GO
