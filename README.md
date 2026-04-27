@@ -9,7 +9,7 @@ dotnet restore -> restaura los paquetes NuGet
 dotnet build -> compila  
 dotnet run -> ejecuta  
 
-con": "Server=localhost;Database=AppWeb;User Id=sa;Password="pass";TrustServerCertificate=True;"  
+"con": "Server=localhost;Database=AppWeb;User Id=sa;Password=pass;TrustServerCertificate=True;"  
 
 ## Windows
 Add-Migration Inicial  
