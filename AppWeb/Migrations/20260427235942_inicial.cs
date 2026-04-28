@@ -25,20 +25,16 @@ namespace AppWeb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    idRol = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contrasena = table.Column<byte[]>(type: "varbinary(255)", maxLength: 255, nullable: false),
-                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    NombreRol = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.idRol);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,6 +53,30 @@ namespace AppWeb.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Videojuegos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contrasena = table.Column<byte[]>(type: "varbinary(255)", maxLength: 255, nullable: false),
+                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    idRol = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Roles_idRol",
+                        column: x => x.idRol,
+                        principalTable: "Roles",
+                        principalColumn: "idRol",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,6 +144,11 @@ namespace AppWeb.Migrations
                 name: "IX_Detalle_Compras_VideojuegosId",
                 table: "Detalle_Compras",
                 column: "VideojuegosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_idRol",
+                table: "Usuarios",
+                column: "idRol");
         }
 
         /// <inheritdoc />
@@ -143,6 +168,9 @@ namespace AppWeb.Migrations
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

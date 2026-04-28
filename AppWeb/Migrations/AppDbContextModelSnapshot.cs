@@ -100,6 +100,23 @@ namespace AppWeb.Migrations
                     b.ToTable("Detalle_Compras");
                 });
 
+            modelBuilder.Entity("AppWeb.Models.Rol", b =>
+                {
+                    b.Property<int>("idRol")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idRol"));
+
+                    b.Property<string>("NombreRol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("idRol");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("AppWeb.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -129,7 +146,12 @@ namespace AppWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("idRol")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("idRol");
 
                     b.ToTable("Usuarios");
                 });
@@ -199,6 +221,17 @@ namespace AppWeb.Migrations
                     b.Navigation("Compra");
 
                     b.Navigation("Videojuego");
+                });
+
+            modelBuilder.Entity("AppWeb.Models.Usuario", b =>
+                {
+                    b.HasOne("AppWeb.Models.Rol", "Roles")
+                        .WithMany()
+                        .HasForeignKey("idRol")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("AppWeb.Models.Usuario", b =>

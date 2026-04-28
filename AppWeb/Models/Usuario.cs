@@ -24,8 +24,10 @@ namespace AppWeb.Models
 
         [Required]
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
-        [ForeignKey("idRol")]
+
+        [Required]
         public int idRol { get; set; }
+        [ForeignKey("idRol")]
         public Rol Roles { get; set; }
 
         public ICollection<Compra> Compras { get; set; }
