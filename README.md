@@ -33,3 +33,8 @@ VALUES (
     '2026/03/24'
 )  
 GO
+
+### Roles
+
+INSERT INTO Roles (NombreRol)
+VALUES ('Administrador'), ('Cliente')
