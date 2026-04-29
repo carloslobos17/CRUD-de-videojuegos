@@ -67,7 +67,6 @@ body {
 .navbar-brand {
     font-size: 2rem;
 }
-
 .banner {
     background: url('/img/banner.png');
     background-size: contain;

@@ -1,18 +1,22 @@
 using AppWeb.Data;
+using AppWeb.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient();
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("con")
         )
    );
-
 builder.Services.AddSession();
+builder.Services.Configure<PayPalSettings>(
+    builder.Configuration.GetSection("PayPal"));
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
